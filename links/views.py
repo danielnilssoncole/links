@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse('links - test response')
+    context = {'message': 'this is the message from the index view.'}
+    return render(request, 'links/index.html', context)
 
 def about(request):
-    return HttpResponse('links - about page')
+    context = {'name': 'daniel'}
+    return render(request, 'links/about.html', context)
