@@ -8,8 +8,15 @@
   <body>
     <h1>Links</h1>
     <div class="">
-      this is the links site <br>
-      <strong>{{message}}</strong>
+      {% if categories %}
+      <ul>
+        {% for category in categories %}
+        <li>{{ category.name }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <strong>There are no categories present</strong>
+      {% endif %}
     </div>
     <div class="">
       <a href="{% url 'links:about' %}">About</a><br>
