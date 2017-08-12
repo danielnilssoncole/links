@@ -11,16 +11,15 @@
       {% if categories %}
       <ul>
         {% for category in categories %}
-        <li>{{ category.name }}</li>
+        <li>
+          <a href="{% url 'links:show_category' category.slug %}">{{ category.name }}</a>
+        </li>
         {% endfor %}
       </ul>
       {% else %}
         <strong>There are no categories present</strong>
       {% endif %}
     </div>
-    <div class="">
-      <a href="{% url 'links:about' %}">About</a><br>
-      <img style='width: 300px' src="{% static 'images/earth.jpg' %}" alt="earth">
-    </div>
+      <!-- <img style='width: 300px' src="{% static 'images/earth.jpg' %}" alt="earth"> -->
   </body>
 </html>
