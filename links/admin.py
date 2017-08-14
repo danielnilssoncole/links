@@ -7,12 +7,12 @@ class PageInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     inlines = [PageInline]
-    list_display = ('name',)
+    list_display = ('name', 'views', 'likes')
     search_fields = ['name']
     prepopulated_fields = {'slug':('name',)}
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'url')
+    list_display = ('title', 'category', 'url', 'views')
     search_fields = ['title']
 
 admin.site.register(Category, CategoryAdmin)

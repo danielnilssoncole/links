@@ -4,7 +4,9 @@ from links.models import Category, Page
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
-    context = {'categories': category_list}
+    page_list = Page.objects.order_by('-views')[:5]
+    context = {'categories': category_list,
+               'pages': page_list}
     return render(request, 'links/index.html', context)
 
 def about(request):
