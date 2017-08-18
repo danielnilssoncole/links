@@ -21,7 +21,7 @@ def show_category(request, category_name_slug):
                'pages': pages}
     return render(request, 'links/category.html', context)
 
-def add_catgegory(request):
+def add_category(request):
     form = CategoryForm()
 
     if request.method == 'POST':
@@ -33,4 +33,21 @@ def add_catgegory(request):
         else:
             print(form.errors)
     context = {'form': form}
-    return render(request, 'links/add_catgegory.html', context)
+    return render(request, 'links/add_category.html', context)
+
+def add_page(request, category_name_slug):
+    category = get_object_or_404(Category, slug=category_name_slug)
+    form = PageForm()
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+                return show_category(request, category_name_slug)
+        else:
+            print(form.errors)
+    context = {'form': form, 'category': category}
+    return render(request, 'links/add_page.html', context)
