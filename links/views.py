@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from links.models import Category, Page
 from links.forms import CategoryForm
 
@@ -29,7 +31,7 @@ def add_category(request):
 
         if form.is_valid():
             form.save(commit=True)
-            return index(request)
+            return HttpResponseRedirect(reverse('links:index'))
         else:
             print(form.errors)
     context = {'form': form}
@@ -47,6 +49,7 @@ def add_page(request, category_name_slug):
                 page.views = 0
                 page.save()
                 return show_category(request, category_name_slug)
+                # return HttpResponseRedirect(reverse('links:show_category', args=(category_name_slug,)))
         else:
             print(form.errors)
     context = {'form': form, 'category': category}
