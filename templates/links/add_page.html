@@ -5,6 +5,22 @@
     <title>Links</title>
   </head>
   <body>
-
+    <h1>Add Page to {{ category.name }}</h1>
+    <div>
+      <form id="page_form" action="/links/category/{{ category.slug }}/add_page/" method="post">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+          {{ field.errors }}
+          {{ field.help_text }}
+          {{ field }}<br>
+        {% endfor %}
+        <input type="submit" name="submit" value="Create Page">
+      </form>
+    </div>
+    <a href="{% url 'links:show_category' category.slug %}">{{ category.name }}</a><br>
+    <a href="{% url 'links:index' %}">Home</a>
   </body>
 </html>

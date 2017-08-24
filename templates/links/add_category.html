@@ -20,5 +20,7 @@
         <input type="submit" name="submit" value="Create Category">
       </form>
     </div>
+    <a href="{% url 'links:show_category' category.slug %}">{{ category.name }}</a><br>
+    <a href="{% url 'links:index' %}">Home</a>
   </body>
 </html>

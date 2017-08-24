@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from links.models import Category, Page
-from links.forms import CategoryForm
+from links.forms import CategoryForm, PageForm
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -48,8 +48,7 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-                return show_category(request, category_name_slug)
-                # return HttpResponseRedirect(reverse('links:show_category', args=(category_name_slug,)))
+                return HttpResponseRedirect(reverse('links:show_category', args=(category_name_slug,)))
         else:
             print(form.errors)
     context = {'form': form, 'category': category}
