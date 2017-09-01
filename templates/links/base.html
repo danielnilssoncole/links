@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Links -
+      {% block title_block %}
+        Default Title
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <div class="">
+      {% block body_block %}
+      default content
+      {% endblock %}
+    </div>
+    <hr>
+    <div>
+      <ul>
+        <li><a href="{% url 'links:add_category' %}">Add New Category</a></li>
+        <li><a href="{% url 'links:index' %}">Home</a></li>
+      </ul>
+    </div>
+  </body>
+</html>
