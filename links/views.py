@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from links.models import Category, Page
-from links.forms import CategoryForm, PageForm
+from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -53,3 +53,21 @@ def add_page(request, category_name_slug):
             print(form.errors)
     context = {'form': form, 'category': category}
     return render(request, 'links/add_page.html', context)
+
+# def register(request):
+#     registered = False
+#     user_form = UserForm(data=request.POST)
+#     profile_form = UserProfileForm(data=request.POST)
+#
+#     if user_form.is_valid() and profile_form.is_valid():
+#         user = user_form.save()
+#         user.set_password(user.password)
+#         user.save()
+#
+#         profile = profile_form.save(commit=False)
+#         profile.user = user
+#
+#         if 'picture' in request.FILES:
+#             profile.picture = request.FILES['picture']
+#         profile.save()
+#         registered = True
