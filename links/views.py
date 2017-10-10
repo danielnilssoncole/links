@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from links.models import Category, Page
+from links.models import Category, Page, UserProfile
 from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
 def index(request):
@@ -54,20 +54,31 @@ def add_page(request, category_name_slug):
     context = {'form': form, 'category': category}
     return render(request, 'links/add_page.html', context)
 
-# def register(request):
-#     registered = False
-#     user_form = UserForm(data=request.POST)
-#     profile_form = UserProfileForm(data=request.POST)
-#
-#     if user_form.is_valid() and profile_form.is_valid():
-#         user = user_form.save()
-#         user.set_password(user.password)
-#         user.save()
-#
-#         profile = profile_form.save(commit=False)
-#         profile.user = user
-#
-#         if 'picture' in request.FILES:
-#             profile.picture = request.FILES['picture']
-#         profile.save()
-#         registered = True
+def register(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'registered': registered
+    }
+    return render(request, 'links/register.html', context)
