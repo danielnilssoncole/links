@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from links.models import Category, Page, UserProfile
 from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -82,3 +83,20 @@ def register(request):
         'registered': registered
     }
     return render(request, 'links/register.html', context)
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active():
+                login(request, user)
+                return HttpResponseRedirect(reverse('links:index'))
+            else:
+                return HttpResponse('Your links account is disabled')
+        else:
+            print('invalid login details: {0}, {1}'.format(username, password))
+            return HttpResponse('Invalid login details supplied.')
+    else:
+        return render(request, 'links/login.html', {})

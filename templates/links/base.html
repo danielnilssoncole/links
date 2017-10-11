@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Links -
+      Links |
       {% block title_block %}
         Default Title
       {% endblock %}
@@ -27,6 +27,8 @@
       <ul>
         <li><a href="{% url 'links:add_category' %}">Add New Category</a></li>
         <li><a href="{% url 'links:index' %}">Home</a></li>
+        <li><a href="{% url 'links:register' %}">Sign Up</a></li>
+        <li><a href="{% url 'links:login' %}">Login</a></li>
       </ul>
     </div>
   </body>

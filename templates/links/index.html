@@ -7,6 +7,11 @@
 
 {% block body_block%}
   <h1>Links</h1>
+  {% if user.is_authenticated %}
+    Hello {{ user.username }}
+  {% else %}
+  {% endif %}
+  <p></p>
   <h2>Most Liked Categories</h2>
   <div class="">
     {% if categories %}
