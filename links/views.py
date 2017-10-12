@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from links.models import Category, Page, UserProfile
 from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -24,6 +25,7 @@ def show_category(request, category_name_slug):
                'pages': pages}
     return render(request, 'links/category.html', context)
 
+@login_required
 def add_category(request):
     form = CategoryForm()
 
@@ -38,6 +40,7 @@ def add_category(request):
     context = {'form': form}
     return render(request, 'links/add_category.html', context)
 
+@login_required
 def add_page(request, category_name_slug):
     category = get_object_or_404(Category, slug=category_name_slug)
     form = PageForm()
@@ -85,18 +88,29 @@ def register(request):
     return render(request, 'links/register.html', context)
 
 def user_login(request):
+    context = {}
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
-            if user.is_active():
+            if user.is_active:
                 login(request, user)
                 return HttpResponseRedirect(reverse('links:index'))
             else:
                 return HttpResponse('Your links account is disabled')
         else:
             print('invalid login details: {0}, {1}'.format(username, password))
-            return HttpResponse('Invalid login details supplied.')
+            context = {'error': 'Invalid login details supplied.'}
+            return render(request, 'links/login.html', context)
     else:
-        return render(request, 'links/login.html', {})
+        return render(request, 'links/login.html', context)
+
+@login_required
+def restricted(request):
+    return HttpResponse('Since you\'re logged in, you can see this text!')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
