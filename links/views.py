@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from links.models import Category, Page, UserProfile
 from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from datetime import datetime
 
 def index(request):
+    request.session.set_test_cookie()
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context = {'categories': category_list,
@@ -15,6 +17,9 @@ def index(request):
     return render(request, 'links/index.html', context)
 
 def about(request):
+    if request.session.test_cookie_worked():
+        print('***TEST COOKIE WORKED***')
+        request.session.delete_test_cookie()
     context = {'name': 'daniel'}
     return render(request, 'links/about.html', context)
 
@@ -114,3 +119,17 @@ def restricted(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+def visitor_cookie_handler(request, response):
+    visits = int(request.COOKIES.get('visits', '1'))
+    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+                                        '%Y-%m-%d %H:%M:%S')
+    if (datetime.now() - last_visit_time).days > 0:
+        visits += 1
+        response.set_cookie('last_visit', str(datetime.now()))
+    else:
+        visits = 1
+        response.set_cookie('last_visit', last_visit_cookie)
+    response.set_cookie('visits', visits)
