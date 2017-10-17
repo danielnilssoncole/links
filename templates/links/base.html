@@ -28,10 +28,10 @@
         {% if user.is_authenticated %}
           <li><a href="{% url 'links:add_category' %}">Add New Category</a></li>
           <li><a href="{% url 'links:restricted' %}">Restriced Page</a></li>
-          <li><a href="{% url 'links:logout' %}">Logout</a></li>
+          <li><a href="{% url 'auth_logout' %}?next=/links/">Logout</a></li>
         {% else %}
-          <li><a href="{% url 'links:login' %}">Login</a></li>
-          <li><a href="{% url 'links:register' %}">Sign Up</a></li>
+          <li><a href="{% url 'auth_login' %}">Login</a></li>
+          <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
         {% endif %}
           <li><a href="{% url 'links:index' %}">Home</a></li>
       </ul>
