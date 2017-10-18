@@ -25,12 +25,12 @@
       <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'links:index' %}">Links</a>
+      <a class="navbar-brand" href="#">Links</a>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'links:index' %}">Home </a>
+            <a class="nav-link" href="{% url 'links:index' %}">Home <span class="sr-only">(current)</span></a>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
