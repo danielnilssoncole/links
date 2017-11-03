@@ -24,7 +24,7 @@ def about(request):
 
 def show_category(request, category_name_slug):
     category = get_object_or_404(Category, slug=category_name_slug)
-    pages = Page.objects.filter(category=category)
+    pages = Page.objects.filter(category=category).order_by('-views')
     context = {'category': category,
                'pages': pages}
     return render(request, 'links/category.html', context)
@@ -88,6 +88,7 @@ def visitor_cookie_handler(request):
 
 def search(request):
     result_list = []
+    query = ''
     if request.method == 'POST':
         query = request.POST['query'].strip()
         if query:
@@ -109,6 +110,21 @@ def track_url(request):
                 page.views += 1
                 page.save()
                 url = page.url
+            except:
+                pass
+    return redirect(url)
+
+def track_cat(request):
+    cat_slug = None
+    url = '/links/'
+    if request.method == 'GET':
+        if 'cat_slug' in request.GET:
+            cat_slug = request.GET['cat_slug']
+            try:
+                cat = Category.objects.get(slug=cat_slug)
+                cat.views += 1
+                cat.save()
+                url = '/links/category/{0}'.format(cat_slug)
             except:
                 pass
     return redirect(url)
