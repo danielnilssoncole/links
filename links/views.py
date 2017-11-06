@@ -27,6 +27,14 @@ def show_category(request, category_name_slug):
     pages = Page.objects.filter(category=category).order_by('-views')
     context = {'category': category,
                'pages': pages}
+    context['query'] = category.name
+    result_list = []
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+            context['query'] = query
+            context['result_list'] = result_list
     return render(request, 'links/category.html', context)
 
 @login_required

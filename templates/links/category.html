@@ -29,4 +29,41 @@
   {% else %}
     <p>This category does not exist.</p>
   {% endif %}
+  <div>
+    <form class="form-inline"
+          id="user_form"
+          action="{% url 'links:show_category' category.slug %}"
+          method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text"
+               name="query"
+               value="{{query}}"
+               id="query"
+               size="50"
+               class="form-control">
+      </div>
+      <button class="btn btn-primary"
+              type="submit"
+              name="submit"
+              value="Search">
+        Search
+      </button>
+    </form>
+  </div>
+  <div>
+    {% if result_list %}
+    <h3>Results</h3>
+    <div class="list-group">
+      {% for result in result_list %}
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <a href="{{ result.link }}">{{ result.title }}</a>
+        </h4>
+        <p class="list-group-item-heading">{{ result.summary }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
 {% endblock %}
