@@ -17,12 +17,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import reverse
 from registration.backends.simple.views import RegistrationView
 from links import views
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
-        return '/links/'
+        return reverse('links:register_profile')
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),

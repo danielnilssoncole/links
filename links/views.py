@@ -136,3 +136,18 @@ def track_cat(request):
             except:
                 pass
     return redirect(url)
+
+@login_required
+def register_profile(request):
+    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return HttpResponseRedirect(reverse('links:index'))
+        else:
+            print(form.errors)
+    context = {'form' : form}
+    return render(request, 'links/profile_registration.html', context)
