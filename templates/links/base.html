@@ -37,7 +37,7 @@
             <a class="nav-link" href="{% url 'links:add_category' %}">Add New Category</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'links:restricted' %}">Restriced Page</a>
+            <a class="nav-link" href="{% url 'links:profile' user.username %}">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'auth_logout' %}?next=/links/">Logout</a>

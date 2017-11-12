@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from links.webhose_search import run_query
 from links.models import Category, Page, UserProfile
+from django.contrib.auth.models import User
 from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from datetime import datetime
 
@@ -151,3 +152,28 @@ def register_profile(request):
             print(form.errors)
     context = {'form' : form}
     return render(request, 'links/profile_registration.html', context)
+
+@login_required
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('links:index')
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm({
+        'website' : userprofile.website,
+        'picture' : userprofile.picture
+    })
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return HttpResponseRedirect(reverse('links:profile', args=(user.username,)))
+        else:
+            print(form.errors)
+    context = {
+        'userprofile' : userprofile,
+        'selecteduser' : user,
+        'form' : form
+    }
+    return render(request, 'links/profile.html', context)
