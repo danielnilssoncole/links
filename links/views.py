@@ -177,3 +177,9 @@ def profile(request, username):
         'form' : form
     }
     return render(request, 'links/profile.html', context)
+
+@login_required
+def list_profiles(request):
+    userprofile_list = UserProfile.objects.all()
+    context = { 'userprofile_list' : userprofile_list }
+    return render(request, 'links/list_profiles.html', context)

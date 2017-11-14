@@ -40,6 +40,9 @@
             <a class="nav-link" href="{% url 'links:profile' user.username %}">Profile</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'links:list_profiles' %}">List Profiles</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'auth_logout' %}?next=/links/">Logout</a>
           </li>
           <li class="nav-item">

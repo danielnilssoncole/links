@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^gotocat/$', views.track_cat, name='gotocat'),
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
+    url(r'^profile/$', views.list_profiles, name='list_profiles'),
 ]
